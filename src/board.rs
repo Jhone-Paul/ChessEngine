@@ -2,15 +2,15 @@
 use std::fmt;
 
 #[derive(Clone)]
-enum Color {White, Black}
+pub enum Color {White, Black}
 
 #[derive(Clone)]
-enum Kind {King, Queen, Bishop, Knight, Rook, Pawn}
+pub enum Kind {King, Queen, Bishop, Knight, Rook, Pawn}
 
 #[derive(Clone)]
 pub struct Piece {
-    color: Color,
-    kind: Kind,
+    pub color: Color,
+    pub kind: Kind,
 }
 // handle printing for the peices
 impl fmt::Display for Piece {
