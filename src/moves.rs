@@ -1,6 +1,6 @@
 use crate::board::Board;
 use crate::board::Color;
-use crate::board::Piece;
+use crate::board::Kind;
 
 
 pub fn make_move(board: &mut Board, str_move: &str){
@@ -12,7 +12,7 @@ pub fn make_move(board: &mut Board, str_move: &str){
     board[to] = piece;
 }
 
-fn parse_square(s:&str) -> usize{
+pub fn parse_square(s:&str) -> usize{
     let mut chars = s.chars();
     let col = chars.next().unwrap();
     let row = chars.next().unwrap();
@@ -24,6 +24,26 @@ fn parse_square(s:&str) -> usize{
     
 }
 
+pub fn is_legal_move(board: &Board, from: usize, to :usize)-> bool {
+    let piece = match &board[from] {
+        Some(p) => p,
+        None => return false,
+    };
+    
+    if let Some(target) = &board[to] {
+        if target.color == piece.color { return false; }
+    }
+
+    match piece.kind {
+        Kind::Pawn => is_legal_pawn(board, from ,to),
+        Kind::Rook => is_legal_rook(board, from, to),
+        Kind::Bishop => is_legal_bishop(board, from, to),
+        Kind::Knight => is_legal_knight(from,to),
+        Kind::Queen => is_legal_rook(board, from, to) || is_legal_bishop(board,from,to),
+        Kind::King => is_legal_king(from, to),
+    }
+
+}
 // Funtions for each piece. 
 
 fn is_path_clear(board: &Board, from: usize, to: usize) -> bool {
@@ -96,18 +116,17 @@ fn is_legal_pawn(board: &Board, from:usize, to:usize) -> bool {
     };
     
     let start_row = match piece.color{
-        Color::White => 2,
+        Color::White => 1,
         Color::Black => 6,
     };
     
     let row_diff = to_row - from_row;
     let col_diff = (to_col - from_col).abs();
-
     if col_diff == 0 && row_diff == direction {
         return board[to].is_none();
     }
 
-    if col_diff == 0 && row_diff == 2 * direction && from_row == start_row {
+    if col_diff == 0 && row_diff == 2*direction && from_row == start_row {
         let middle = ((from_row + direction) * 8 + from_col) as usize;
         return board[to].is_none() && board[middle].is_none();
     }
@@ -120,7 +139,7 @@ fn is_legal_pawn(board: &Board, from:usize, to:usize) -> bool {
 
 }
 
-fn is_leagal_king(from:usize, to:usize)-> bool{
+fn is_legal_king(from:usize, to:usize)-> bool{
     let from_row = (from/8) as i32;
     let from_col = (from%8) as i32;
     let to_row = (to/8) as i32;
