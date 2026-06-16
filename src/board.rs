@@ -16,18 +16,18 @@ pub struct Piece {
 impl fmt::Display for Piece {
     fn fmt(&self, f :&mut fmt::Formatter)-> fmt::Result {
         let symbol = match (&self.color, &self.kind) {
-            (Color::Black, Kind::King)   => "♔",
-            (Color::Black, Kind::Queen)  => "♕",
-            (Color::Black, Kind::Rook)   => "♖",
-            (Color::Black, Kind::Bishop) => "♗",
-            (Color::Black, Kind::Knight) => "♘",
-            (Color::Black, Kind::Pawn)   => "♙",
-            (Color::White, Kind::King)   => "♚",
-            (Color::White, Kind::Queen)  => "♛",
-            (Color::White, Kind::Rook)   => "♜",
-            (Color::White, Kind::Bishop) => "♝",
-            (Color::White, Kind::Knight) => "♞",
-            (Color::White, Kind::Pawn)   => "♟",
+            (Color::White, Kind::King)   => "♔",
+            (Color::White, Kind::Queen)  => "♕",
+            (Color::White, Kind::Rook)   => "♖",
+            (Color::White, Kind::Bishop) => "♗",
+            (Color::White, Kind::Knight) => "♘",
+            (Color::White, Kind::Pawn)   => "♙",
+            (Color::Black, Kind::King)   => "♚",
+            (Color::Black, Kind::Queen)  => "♛",
+            (Color::Black, Kind::Rook)   => "♜",
+            (Color::Black, Kind::Bishop) => "♝",
+            (Color::Black, Kind::Knight) => "♞",
+            (Color::Black, Kind::Pawn)   => "♟",
         };
         write!(f, "{}", symbol)
     }
@@ -53,8 +53,8 @@ pub fn print_board(board: &Board){
     println!(" |{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|", "a", "b", "c", "d", "e", "f", "g", "h");
     println!("{}","-".repeat(50));
 
-    for i in 0..8{
-        print!("{}|",i);
+    for i in (0..8).rev(){
+        print!("{}|",i+1);
         for j in 0..8 {
             let cell = match &board[i * 8 + j] {
                 Some(piece) => format!("{}", piece),
@@ -65,6 +65,9 @@ pub fn print_board(board: &Board){
         println!{};
         println!("{}","-".repeat(50));
     }
+    println!(" |{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|", "a", "b", "c", "d", "e", "f", "g", "h");
+    println!("{}","-".repeat(50));
+
 
 }
 
